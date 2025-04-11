@@ -14,7 +14,8 @@
     }
 
     body {
-      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;      background-color: #f0f0f5;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;      
+      background-color: #f0f0f5;
       padding-top: 100px;
       display: flex;
       flex-direction: column;
@@ -74,7 +75,6 @@
     input[type="text"],
     textarea {
       font-family: 'Times New Roman', Times, serif;
-
       width: 100%;
       padding: 10px;
       margin-top: 5px;
@@ -245,6 +245,38 @@
     }
 
     mostrarAvaliacoes();
+  </script>
+
+  <!-- Firebase SDK -->
+  <script type="module">
+    // Importa os módulos do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyDivAHUWCItUYhK6GqaL4mQAcujB0ZXopA",
+      authDomain: "site-avaliacao.firebaseapp.com",
+      projectId: "site-avaliacao",
+      storageBucket: "site-avaliacao.firebasestorage.app",
+      messagingSenderId: "473733927925",
+      appId: "1:473733927925:web:012faf23cd0f8b724046bc",
+      measurementId: "G-LFVYBBYGYC"
+    };
+
+    // Inicializa o Firebase e Firestore
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    console.log("Firebase conectado com sucesso!");
+    
+    // Exemplo (você pode usar isso para testar uma gravação):
+    // await addDoc(collection(db, "avaliacoes"), {
+    //   nome: "Teste",
+    //   nota: 5,
+    //   comentario: "Funciona!",
+    //   data: new Date().toLocaleString()
+    // });
   </script>
 </body>
 </html>
