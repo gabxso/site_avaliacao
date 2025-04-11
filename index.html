@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Um site para testar as habilidades no CSS">
+  <meta name="keywords" content="Agência Digital, serviços, CSS e HTML"> 
+  <link rel="stylesheet" href="css/estilo.css">
+  <link rel="stylesheet" href="css/responsivo.css">
+  <title>Mesa Redonda - Login</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Romanesco&family=Wallpoet&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Roboto Flex', sans-serif;
+      background-color: #f0f0f5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .login-container {
+      font-family: "Wallpoet", sans-serif;
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    h1 {
+      color: #0f024b;
+      font-size: 28px;
+      margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #0f024b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #03010c;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-container">
+    <h1>Mesa Redonda</h1>
+    <form onsubmit="return login(event)">
+      <input type="text" id="usuario" placeholder="Usuário" required>
+      <input type="password" id="senha" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+  </div>
+
+  <script>
+    function login(event) {
+      event.preventDefault();
+
+      const usuarioDigitado = document.getElementById('usuario').value.toLowerCase();
+      const senha = document.getElementById('senha').value;
+
+      const usuariosValidos = ['Gabriel', 'Eduardo', 'Liliane', 'Guilherme', 'Robert'];
+      const usuariosLower = usuariosValidos.map(nome => nome.toLowerCase());
+
+      if (usuariosLower.includes(usuarioDigitado) && senha === '1234') {
+        const nomeOriginal = usuariosValidos.find(nome => nome.toLowerCase() === usuarioDigitado);
+        localStorage.setItem('avaliador', nomeOriginal);
+        window.location.href = 'avaliacoes.html';
+      } else {
+        alert('Usuário ou senha inválidos!');
+      }
+    }
+  </script>
+
+  <!-- Firebase App (core) -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-app.js"></script>
+  <!-- Firebase Analytics -->
+  <script src="https://www.gstatic.com/firebasejs/9.6.10/firebase-analytics.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyDivAHUWCItUYhK6GqaL4mQAcujB0ZXopA",
+      authDomain: "site-avaliacao.firebaseapp.com",
+      projectId: "site-avaliacao",
+      storageBucket: "site-avaliacao.firebasestorage.app",
+      messagingSenderId: "473733927925",
+      appId: "1:473733927925:web:012faf23cd0f8b724046bc",
+      measurementId: "G-LFVYBBYGYC"
+    };
+
+    const app = firebase.initializeApp(firebaseConfig);
+    const analytics = firebase.analytics();
+  </script>
+</body>
+</html>

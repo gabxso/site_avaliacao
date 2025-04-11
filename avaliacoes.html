@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Mesa Redonda - Avaliações</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&family=Roboto+Flex:opsz,wght@8..144,100..1000&family=Romanesco&family=Wallpoet&display=swap');
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;      background-color: #f0f0f5;
+      padding-top: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .navbar {
+      background-color: #0f024b;
+      padding: 16px;
+      width: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      color: white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      z-index: 1000;
+    }
+
+    .logo h1 {
+      font-family: "Wallpoet", sans-serif;
+      font-size: 24px;
+      color: white;
+      margin-left: 20px;
+    }
+
+    .menu {
+      margin-right: 20px;
+    }
+
+    .menu a {
+      font-family: "Wallpoet", sans-serif;
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+    }
+
+    main {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 90%;
+      max-width: 600px;
+      margin-bottom: 40px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-top: 15px;
+    }
+
+    input[type="text"],
+    textarea {
+      font-family: 'Times New Roman', Times, serif;
+
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #0f024b;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #2d3839;
+    }
+
+    .estrelas {
+      display: flex;
+      justify-content: center;
+      margin: 10px 0;
+    }
+
+    .estrela {
+      font-size: 30px;
+      cursor: pointer;
+      color: #ccc;
+      transition: color 0.3s;
+      margin: 0 4px;
+    }
+
+    .estrela.ativa {
+      color: #f7d000;
+    }
+
+    .historico {
+      margin-top: 40px;
+    }
+
+    .avaliacao {
+      border-bottom: 1px solid #ccc;
+      padding: 10px 0;
+    }
+
+    .avaliacao strong {
+      display: block;
+    }
+
+    .data {
+      font-size: 0.9em;
+      color: #666;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">
+      <h1>Mesa Redonda</h1>
+    </div>
+    <div class="menu">
+      <a href="#historico-avaliacoes">Avaliações</a>
+      <a href="index.html">Sair</a>
+    </div>
+  </nav>
+
+  <main>
+    <form id="avaliacao-form">
+      <label for="restaurante">Nome do Restaurante:</label>
+      <input type="text" id="restaurante" required>
+
+      <label for="avaliador">Avaliador:</label>
+      <input type="text" id="avaliador" readonly>
+
+      <label for="nota">Nota:</label>
+      <div class="estrelas" id="estrelas">
+        <span class="estrela" data-valor="1">&#9733;</span>
+        <span class="estrela" data-valor="2">&#9733;</span>
+        <span class="estrela" data-valor="3">&#9733;</span>
+        <span class="estrela" data-valor="4">&#9733;</span>
+        <span class="estrela" data-valor="5">&#9733;</span>
+      </div>
+
+      <label for="comentario">Comentário:</label>
+      <textarea id="comentario" rows="3" required></textarea>
+
+      <button type="submit">Enviar Avaliação</button>
+    </form>
+
+    <div class="historico" id="historico-avaliacoes">
+      <h2>Histórico de Avaliações</h2>
+    </div>
+  </main>
+
+  <script>
+    const avaliadorInput = document.getElementById('avaliador');
+    const usuarioLogado = localStorage.getItem('avaliador') || 'Desconhecido';
+    avaliadorInput.value = usuarioLogado;
+
+    let notaSelecionada = 0;
+
+    document.querySelectorAll('.estrela').forEach(estrela => {
+      estrela.addEventListener('click', () => {
+        notaSelecionada = parseInt(estrela.getAttribute('data-valor'));
+        document.querySelectorAll('.estrela').forEach(e => {
+          e.classList.remove('ativa');
+          if (parseInt(e.getAttribute('data-valor')) <= notaSelecionada) {
+            e.classList.add('ativa');
+          }
+        });
+      });
+    });
+
+    document.getElementById('avaliacao-form').addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const restaurante = document.getElementById('restaurante').value;
+      const comentario = document.getElementById('comentario').value;
+      const avaliador = usuarioLogado;
+      const data = new Date().toLocaleString();
+
+      if (notaSelecionada === 0) {
+        alert("Por favor, selecione uma nota.");
+        return;
+      }
+
+      const novaAvaliacao = { restaurante, avaliador, nota: notaSelecionada, comentario, data };
+      const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || [];
+      avaliacoes.push(novaAvaliacao);
+      localStorage.setItem('avaliacoes', JSON.stringify(avaliacoes));
+
+      this.reset();
+      notaSelecionada = 0;
+      document.querySelectorAll('.estrela').forEach(e => e.classList.remove('ativa'));
+      mostrarAvaliacoes();
+    });
+
+    function mostrarAvaliacoes() {
+      const historico = document.getElementById('historico-avaliacoes');
+      const avaliacoes = JSON.parse(localStorage.getItem('avaliacoes')) || [];
+
+      historico.innerHTML = "<h2>Histórico de Avaliações</h2>";
+
+      avaliacoes.reverse().forEach(avaliacao => {
+        const div = document.createElement('div');
+        div.className = 'avaliacao';
+
+        const estrelas = '★'.repeat(avaliacao.nota) + '☆'.repeat(5 - avaliacao.nota);
+
+        div.innerHTML = `
+          <strong>${avaliacao.restaurante}</strong>
+          <div class="data">Data: ${avaliacao.data}</div>
+          <div>Avaliador: ${avaliacao.avaliador}</div>
+          <div>Nota: ${estrelas}</div>
+          <div>Comentário: ${avaliacao.comentario}</div>
+        `;
+
+        historico.appendChild(div);
+      });
+    }
+
+    mostrarAvaliacoes();
+  </script>
+</body>
+</html>
